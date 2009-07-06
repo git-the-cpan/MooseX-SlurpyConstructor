@@ -1,0 +1,12 @@
+Build.PL
+Changes
+lib/MooseX/SlurpyConstructor/Role/Attribute.pm
+lib/MooseX/SlurpyConstructor/Role/Object.pm
+lib/MooseX/SlurpyConstructor.pm
+Makefile
+Makefile.PL
+MANIFEST
+t/01_usage.t
+t/02_usage_from_main.t
+t/03_normal_usage.t
+t/04_bad_usage.t
