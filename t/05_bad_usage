@@ -31,7 +31,7 @@ use Moose;
 use MooseX::SlurpyConstructor;
 
 has a => (
-    is      => 'ro',
+    is          => 'ro',
 );
 
 package main;

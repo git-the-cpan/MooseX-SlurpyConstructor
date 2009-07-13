@@ -1,12 +1,16 @@
 Build.PL
 Changes
+lib/MooseX/SlurpyConstructor.pm
 lib/MooseX/SlurpyConstructor/Role/Attribute.pm
 lib/MooseX/SlurpyConstructor/Role/Object.pm
-lib/MooseX/SlurpyConstructor.pm
-Makefile
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
+t/00_pod.t
+t/00_pod_coverage.t
 t/01_usage.t
 t/02_usage_from_main.t
 t/03_normal_usage.t
-t/04_bad_usage.t
+t/04_attribute_options.t
+t/05_bad_usage
+README
+META.yml

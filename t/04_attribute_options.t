@@ -1,14 +1,14 @@
 #!/usr/bin/perl
 
-package SingleUsage;
+package NoInitArg;
 
 use Moose;
 use MooseX::SlurpyConstructor;
 
 has slurpy => (
     is      => 'ro',
-    isa     => 'Maybe[HashRef[Str]]',
     slurpy  => 1,
+    init_arg=> undef,
 );
 
 has non_slurpy => (
@@ -27,21 +27,21 @@ package main;
 use strict;
 use warnings;
 
-use Test::More tests => 6;
+use Test::More tests => 5;
 
-my $no_slurpy = SingleUsage->new({
+my $no_init_arg = NoInitArg->new({
     non_slurpy  => 32,
     other       => 33,
 });
-ok( defined $no_slurpy,
-    "instantiating class with no unknown attributes"
+ok( defined $no_init_arg,
+    "if no init_arg for slurpy attribute, it's not an error to provide in constructor"
 );
-is_deeply( $no_slurpy->slurpy,
+is_deeply( $no_init_arg->slurpy,
     {},
     "...slurpy attribute is empty hashref"
 );
 
-my $with_slurpy = SingleUsage->new({
+my $with_slurpy = NoInitArg->new({
     non_slurpy  => 1,
     other       => 2,
     unknown1    => 'a',
@@ -60,25 +60,14 @@ is_deeply( $with_slurpy->slurpy,
     "...expected value for slurpy attribute"
 );
 
-my $assigning_slurpy;
-eval {
-    $assigning_slurpy = SingleUsage->new({
-        slurpy  => "a"
-    });
-};
-like( $@,
-    qr/Can't assign to 'slurpy', as it's slurpy init_arg/,
-    "expected error message when trying to assign to a slurpy parameter"
-);
-
-eval {
-    SingleUsage->new({
-        unknown     => {},
-    });
-};
-like( $@,
-    qr/^Attribute \(slurpy\) does not pass the type constraint/,
-    'slurpy attributes honour type constraints'
+my $assigning_slurpy = NoInitArg->new({
+    slurpy  => "a"
+});
+is_deeply( $assigning_slurpy->slurpy,
+    {
+        slurpy  => "a",
+    },
+    "can assign init_arg with same name as slurpy attribute if it has 'init_arg => undef'"
 );
 
 1;

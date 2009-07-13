@@ -1,0 +1,25 @@
+---
+name: MooseX-SlurpyConstructor
+version: 0.10
+author:
+  - 'Mark Morgan C<< <makk384@gmail.com> >>'
+abstract: Assign all unknown arguments to attribute in object constructor.
+license: perl
+resources:
+  license: http://dev.perl.org/licenses/
+requires:
+  Module::Build: 0
+  Moose: 0.74
+  Test::More: 0
+provides:
+  MooseX::SlurpyConstructor:
+    file: lib/MooseX/SlurpyConstructor.pm
+    version: 0.10
+  MooseX::SlurpyConstructor::Role::Attribute:
+    file: lib/MooseX/SlurpyConstructor/Role/Attribute.pm
+  MooseX::SlurpyConstructor::Role::Object:
+    file: lib/MooseX/SlurpyConstructor/Role/Object.pm
+generated_by: Module::Build version 0.280802
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2

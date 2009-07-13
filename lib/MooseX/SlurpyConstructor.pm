@@ -1,6 +1,6 @@
 package MooseX::SlurpyConstructor;
 
-our $VERSION = '0.01';
+our $VERSION = '0.10';
 
 use Moose;
 use Moose::Exporter;
@@ -41,7 +41,7 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-MooseX::SlurpyConstructor - Assign all unknown attributes to attribute in object constructor.
+MooseX::SlurpyConstructor - Assign all unknown arguments to attribute in object constructor.
 
 =head1 SYNOPSIS
 
@@ -95,7 +95,7 @@ instantiated uses this one, but does not declare a slurpy attribute.
 
 =item MooseX::StrictConstructor
 
-The opposite of this module, making constructors die on unknown attributes.
+The opposite of this module, making constructors die on unknown arguments.
 Note that if both of these are used together, SlurpyConstructor will take
 precedence and strict constructor explosions will never occour.
 

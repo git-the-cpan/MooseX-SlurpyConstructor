@@ -11,6 +11,7 @@ my $builder = Module::Build->new(
     requires            => {
         'Moose'             => '0.74',
         'Test::More'        => '0',
+        'Module::Build'     => '0',
     },
     create_makefile_pl  => 'passthrough',
     create_readme       => 1,
