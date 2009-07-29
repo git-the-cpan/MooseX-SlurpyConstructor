@@ -1,6 +1,6 @@
 package MooseX::SlurpyConstructor;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 use Moose;
 use Moose::Exporter;
