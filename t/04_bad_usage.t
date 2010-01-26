@@ -21,7 +21,7 @@ eval {
     );
 };
 like( $@,
-    qr/Can't add multiple slurpy attributes to a class/,
+    qr/Can't add mutliple slurpy attributes to a class, attempting to add 'slurpy2', existing slurpy attribute 'slurpy'/,
     "expected error when trying to add two slurpy attributes to a class"
 );
 
