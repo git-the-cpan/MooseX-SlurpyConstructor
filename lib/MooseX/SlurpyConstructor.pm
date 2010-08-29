@@ -1,41 +1,19 @@
 package MooseX::SlurpyConstructor;
 
-our $VERSION = '0.94';
+our $VERSION = '1.1';
 
-use Moose;
+use Moose 0.94 ();
 use Moose::Exporter;
-use Moose::Util::MetaRole;
 use MooseX::SlurpyConstructor::Role::Object;
 use MooseX::SlurpyConstructor::Role::Attribute;
 
-Moose::Exporter->setup_import_methods;
+Moose::Exporter->setup_import_methods(
+    base_class_roles    => [ qw( MooseX::SlurpyConstructor::Role::Object ) ],
 
-sub init_meta {
-    my ( undef, %args ) = @_;
-
-    Moose->init_meta( %args );
-
-    my $for_class = $args{ for_class };
-
-    Moose::Util::MetaRole::apply_metaclass_roles(
-        for_class               => $for_class,
-        attribute_metaclass_roles   => [
-            qw( MooseX::SlurpyConstructor::Role::Attribute ),
-        ],
-    );
-
-    Moose::Util::MetaRole::apply_base_class_roles(
-        for_class               => $for_class,
-        roles                   => [
-            qw( MooseX::SlurpyConstructor::Role::Object )
-        ],
-    );
-    return $for_class->meta;
-}
-
-no Moose;
-
-__PACKAGE__->meta->make_immutable;
+    class_metaroles     => {
+        attribute       => [ qw( MooseX::SlurpyConstructor::Role::Attribute ) ],
+    },
+);
 
 =pod
 
@@ -99,6 +77,10 @@ The opposite of this module, making constructors die on unknown arguments.
 Note that if both of these are used together, SlurpyConstructor will take
 precedence and strict constructor explosions will never occour.
 
+This module can also be used in migrating code from vanilla Moose to
+using L<MooseX::StrictConstructor>.  That was one of my original motivations
+for writing it; to allow staged migration.
+
 =back
 
 =head1 AUTHOR
@@ -109,6 +91,8 @@ Thanks to the folks from moose mailing list and IRC channels for
 helping me find my way around some of the Moose bits I didn't
 know of before writing this module.
 
+Thanks also to Christian Walde for bugfix patches.
+
 =head1 BUGS
 
 As usual, send bugs or feature requests to
@@ -117,7 +101,7 @@ L<http://rt.cpan.org>.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2009 Mark Morgan, All Rights Reserved.
+Copyright 2009-2010 Mark Morgan, All Rights Reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

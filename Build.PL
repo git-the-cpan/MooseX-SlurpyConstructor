@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
 
@@ -9,7 +11,7 @@ my $builder = Module::Build->new(
     module_name         => 'MooseX::SlurpyConstructor',
     license             => 'perl',
     requires            => {
-        'Moose'             => '0.74',
+        'Moose'             => '0.94',
         'Test::More'        => '0',
         'Module::Build'     => '0',
     },

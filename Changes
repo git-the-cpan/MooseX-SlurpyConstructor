@@ -1,3 +1,15 @@
+1.1         2010-08-29
+
+- Previous versions didn't honour undefined predicates or lazy attributes
+    - fixed, with tests to ensure no regression in future.
+    - thanks to Christian Walde for report and fix.
+    - I'm surprised I never ran into this issue before now. :)
+- Now avoids deprecation warnings about Moose::Util::MetaRole
+    - thanks again to Christian Walde for report
+- Moved pod testing into xt dir
+- Upped required Moose version to 0.94.
+- Minor non-semantic changes.
+
 0.94        2010-01-26
 
 - Fixed tests to:

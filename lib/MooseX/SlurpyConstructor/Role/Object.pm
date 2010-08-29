@@ -13,6 +13,7 @@ around new => sub {
     }
 
     my @init_args =
+      grep { exists $args->{ $_ } }
       grep { defined }
       map { $_->init_arg }
       $class->meta->get_all_attributes;
@@ -75,7 +76,7 @@ L<MooseX::SlurpyConstructor>.
 
 =over 4
 
-=item MooseX::StrictConstructor
+=item MooseX::SlurpyConstructor
 
 Main class, with relevant details.
 

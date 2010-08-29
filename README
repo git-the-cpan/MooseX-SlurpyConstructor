@@ -53,20 +53,26 @@ SEE ALSO
         SlurpyConstructor will take precedence and strict constructor
         explosions will never occour.
 
+        This module can also be used in migrating code from vanilla Moose to
+        using MooseX::StrictConstructor. That was one of my original
+        motivations for writing it; to allow staged migration.
+
 AUTHOR
-    Mark Morgan `<makk384@gmail.com>'
+    Mark Morgan "<makk384@gmail.com>"
 
     Thanks to the folks from moose mailing list and IRC channels for helping
     me find my way around some of the Moose bits I didn't know of before
     writing this module.
 
+    Thanks also to Christian Walde for bugfix patches.
+
 BUGS
     As usual, send bugs or feature requests to
-    `bug-moosex-slurpyconstructor@rt.cpan.org' or through web interface
-    http://rt.cpan.org.
+    "bug-moosex-slurpyconstructor@rt.cpan.org" or through web interface
+    <http://rt.cpan.org>.
 
 COPYRIGHT & LICENSE
-    Copyright 2009 Mark Morgan, All Rights Reserved.
+    Copyright 2009-2010 Mark Morgan, All Rights Reserved.
 
     This program is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
