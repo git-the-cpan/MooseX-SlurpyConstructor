@@ -1,0 +1,51 @@
+{
+   "abstract" : "Make your object constructor collect all unknown attributes",
+   "author" : [
+      "Mark Morgan <makk384@gmail.com>",
+      "Karen Etheridge <ether@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 4.200004, CPAN::Meta::Converter version 2.102400",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "MooseX-SlurpyConstructor",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.31"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Moose" : "0.94",
+            "namespace::autoclean" : 0
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::Deep" : 0,
+            "Test::Fatal" : 0,
+            "Test::More" : "0.88"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-moosex-slurpyconstructor@rt.cpan.org",
+         "web" : "http://rt.cpan.org/NoAuth/Bugs.html?Dist=MooseX-SlurpyConstructor"
+      },
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/karenetheridge/MooseX-Slurpyconstructor.git",
+         "web" : "https://github.com/karenetheridge/MooseX-SlurpyConstructor/"
+      }
+   },
+   "version" : "1.2"
+}
+

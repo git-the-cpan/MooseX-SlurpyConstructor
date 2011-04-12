@@ -1,3 +1,16 @@
+1.2         2011-04-12
+
+- Complete rewrite to resolve various issues (Karen Etheridge):
+    - constructor is not inlined (RT#66784)
+    - child classes cannot be slurpy if the parent is not (RT#66785)
+    - compatibility issues with Moose 2.0
+    - use from within a role
+    - interactions with MooseX::StrictConstructor are now reversed - if Strict
+      behaviour is applied to the class, it will take precedence over Slurpy
+      behaviour. This is a simply due to how method modification works in
+      Moose: the constructor cannot be "unmodified" again to tolerate arguments
+      that it already finds intolerable.
+    
 1.1         2010-08-29
 
 - Previous versions didn't honour undefined predicates or lazy attributes

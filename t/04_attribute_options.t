@@ -2,20 +2,18 @@ use strict;
 use warnings;
 
 use Test::More;
-use Test::Fatal;
 use Test::Moose qw( with_immutable );
 
-
 {
-    package SingleUsage;
+    package NoInitArg;
 
     use Moose;
     use MooseX::SlurpyConstructor;
 
     has slurpy => (
         is      => 'ro',
-        isa     => 'HashRef[Str]',
         slurpy  => 1,
+        init_arg=> undef,
         default => sub { {} },
     );
 
@@ -29,23 +27,23 @@ use Test::Moose qw( with_immutable );
     );
 }
 
-my @classes = qw( SingleUsage );
+my @classes = qw( NoInitArg );
 
 with_immutable {
 
-    my $no_slurpy = SingleUsage->new({
+    my $no_init_arg = NoInitArg->new({
         non_slurpy  => 32,
         other       => 33,
     });
-    ok( defined $no_slurpy,
-        "instantiating class with no unknown attributes"
+    ok( defined $no_init_arg,
+        "if no init_arg for slurpy attribute, it's not an error to provide in constructor"
     );
-    is_deeply( $no_slurpy->slurpy,
+    is_deeply( $no_init_arg->slurpy,
         {},
         "...slurpy attribute is empty hashref"
     );
 
-    my $with_slurpy = SingleUsage->new({
+    my $with_slurpy = NoInitArg->new({
         non_slurpy  => 1,
         other       => 2,
         unknown1    => 'a',
@@ -64,14 +62,14 @@ with_immutable {
         "...expected value for slurpy attribute"
     );
 
-    like(
-        exception {
-            SingleUsage->new({
-                unknown     => {},
-            });
+    my $assigning_slurpy = NoInitArg->new({
+        slurpy  => "a"
+    });
+    is_deeply( $assigning_slurpy->slurpy,
+        {
+            slurpy  => "a",
         },
-        qr/^Attribute \(slurpy\) does not pass the type constraint/,
-        'slurpy attributes honour type constraints'
+        "can assign init_arg with same name as slurpy attribute if it has 'init_arg => undef'"
     );
 }
 @classes;

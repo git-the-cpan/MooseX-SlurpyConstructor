@@ -1,83 +1,98 @@
 package MooseX::SlurpyConstructor::Role::Object;
+BEGIN {
+  $MooseX::SlurpyConstructor::Role::Object::VERSION = '1.2';
+}
 
+# applied as base_class_roles => [ __PACKAGE__ ], for all Moose versions.
 use Moose::Role;
 
-around new => sub {
-    my ( $orig, $class, @incoming ) = @_;
+use namespace::autoclean;
 
-    my $args;
-    if ( scalar @incoming == 1 and ref $incoming[ 0 ] eq 'HASH' ) {
-        $args = shift @incoming;
-    } else {
-        $args = { @incoming };
-    }
+after BUILDALL => sub {
+    my $self   = shift;
+    my $params = shift;
 
-    my @init_args =
-      grep { exists $args->{ $_ } }
-      grep { defined }
-      map { $_->init_arg }
-      $class->meta->get_all_attributes;
+    my %attrs = (
+        __INSTANCE__ => 1,
+        map  { $_ => 1 }
+        grep { defined }
+        map  { $_->init_arg } $self->meta->get_all_attributes
+    );
 
-    # all args initially
-    my %slurpy_args = %$args;
+    my @extra = sort grep { !$attrs{$_} } keys %{$params};
+    return if not @extra;
 
-    # remove any that are defined as init_args for any attributes
-    delete @slurpy_args{ @init_args };
+    # XXX TODO: stuff all these into the slurpy attr.
 
-    my %init_args = map { $_ => $args->{ $_ } } @init_args;
+    # find the slurpy attr
+    # TODO: use the metaclass slurpy_attr to find this:
+    # if $self->meta->slurpy_attr
+    # and then the check for multiple slurpy attrs can be done at
+    # composition time.
 
-    # find all attributes marked slurpy
-    my @slurpy_attrs =
-      grep { $_->slurpy }
-      $class->meta->get_all_attributes;
+    my $slurpy_attr = $self->meta->slurpy_attr;
 
-    # and ensure that we have one
-    my $slurpy_attr = shift @slurpy_attrs;
-    if ( not defined $slurpy_attr ) {
-        Moose->throw_error( "No parameters marked 'slurpy', do you need this module?" );
-    } elsif ( scalar @slurpy_attrs ) {
-        # this should never happen, as there should only ever be a single
-        # slurpy attribute
-        die "Something strange here - There should never be more than a single slurpy argument, please report a bug, with test case";
-    }
+    Moose->throw_error('Found extra construction arguments, but there is no \'slurpy\' attribute present!') if not $slurpy_attr;
 
-    my $init_arg = $slurpy_attr->init_arg;
-    if ( defined $init_arg and defined $init_args{ $init_arg } ) {
-        my $name = $slurpy_attr->name;
+    my %slurpy_values;
+    @slurpy_values{@extra} = @{$params}{@extra};
 
-        die( "Can't assign to '$init_arg', as it's slurpy init_arg for attribute '$name'" );
-    }
-
-    my $self = $class->$orig({
-        %init_args
-    });
-
-    # go behind the scenes to set the value, in case the slurpy attr
-    # is marked read-only.
-    $slurpy_attr->set_value( $self, \%slurpy_args );
-
-    return $self;
+    $slurpy_attr->set_value( $self, \%slurpy_values );
 };
-
-no Moose::Role;
 
 1;
 
-__END__
+# ABSTRACT: A role which implements a slurpy constructor for Moose::Object
+
+
 
 =pod
 
 =head1 NAME
 
-MooseX::SlurpyConstructor::Role::Object - Internal class for
-L<MooseX::SlurpyConstructor>.
+MooseX::SlurpyConstructor::Role::Object - A role which implements a slurpy constructor for Moose::Object
 
-=head1 SEE ALSO
+=head1 VERSION
+
+version 1.2
+
+=head1 SYNOPSIS
+
+  Moose::Util::MetaRole::apply_base_class_roles(
+      for_class => $caller,
+      roles =>
+          ['MooseX::SlurpyConstructor::Role::Object'],
+  );
+
+=head1 DESCRIPTION
+
+When you use C<MooseX::SlurpyConstructor>, your objects will have this
+role applied to them. It provides a method modifier for C<BUILDALL()>
+from C<Moose::Object> that saves all unrecognized attributes.
+
+=head1 AUTHORS
 
 =over 4
 
-=item MooseX::SlurpyConstructor
+=item *
 
-Main class, with relevant details.
+Mark Morgan <makk384@gmail.com>
+
+=item *
+
+Karen Etheridge <ether@cpan.org>
+
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2011 by Karen Etheridge.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__
+
